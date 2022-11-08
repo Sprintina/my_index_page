@@ -2,7 +2,7 @@ import { TrashIcon, PencilIcon } from '@heroicons/react/24/outline';
 
 export const Mark = ({ mark }) => {
   return (
-    <div className='mb-1 box-border border-2 p-1'>
+    <div className='m-2 mb-3 box-border border-2 p-1'>
       <div>
         <img src={mark.src} alt={mark.title} className='w-full' />
       </div>

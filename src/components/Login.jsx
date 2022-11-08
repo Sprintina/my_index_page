@@ -5,7 +5,7 @@ import { useUserState } from '../hooks/now-context';
 
 export const Login = () => {
   console.log('@@@ Login');
-  const { addAccount, userPrint, checkAccount } = useAccount();
+  const { addAccount, checkAccount } = useAccount();
   const { login } = useUserState();
   const userIdRef = useRef();
   const userPWRef = useRef();

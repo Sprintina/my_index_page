@@ -13,7 +13,13 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: ['react', 'react-hooks', 'jsx-a11y', 'prettier'],
+  plugins: [
+    'react',
+    'react-hooks',
+    'jsx-a11y',
+    'prettier',
+    require('prettier-plugin-tailwindcss'),
+  ],
   rules: {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-uses-react': 'off',

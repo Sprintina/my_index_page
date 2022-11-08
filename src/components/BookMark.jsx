@@ -3,10 +3,10 @@ import { useUserState } from '../hooks/now-context';
 export const BookMark = () => {
   console.log('@@@ Profile');
   const { nowUsing, logout } = useUserState();
-  //{session.loginUser.name} ({session.loginUser.id});
+
   return (
     <>
-      <h1>Bookmark of {nowUsing.loginUser.id};</h1>
+      <h1>My Index</h1>
       <button
         onClick={() => {
           logout();

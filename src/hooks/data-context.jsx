@@ -1,6 +1,7 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 const DataContext = createContext();
+const SKEY = 'mipdata';
 
 const BookMarkDB = {
   books: [
@@ -48,6 +49,10 @@ export const DataProvider = ({ children }) => {
       books: [...data.books.filter((_book) => _book.id !== book.id)],
     });
   };
+
+  useEffect(() => {
+    const mipData = localStorage.getItem(SKEY);
+  }, []);
 
   return (
     <DataContext.Provider

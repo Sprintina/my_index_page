@@ -2,25 +2,31 @@ import { createContext, useContext, useEffect, useState } from 'react';
 
 const DataContext = createContext();
 const SKEY = 'mipdata';
+const NKEY = 'nowkey';
 
 const BookMarkDB = {
-  books: [
-    {
-      id: 1,
-      title: 'TTT',
-      marks: [
-        { id: 1, title: 'dd', description: 'description', src: '' },
-        { id: 2, title: 'dd', description: 'description', src: '' },
-        { id: 3, title: 'dd', description: 'description', src: '' },
-        { id: 4, title: 'dd', description: 'description', src: '' },
-        { id: 5, title: 'dd', description: 'description', src: '' },
-      ],
-    },
-  ],
+  books: [],
 };
 
+//reducer ??? need study
+/*const reducer = (data, action) => {
+  switch (action.type) {
+    case 'save':
+      return {
+        ...data,
+        books: action.payload,
+      };
+    case 'remove':
+      return {
+        ...data,
+        books: action.payload,
+      };
+  }
+};*/
+
 export const DataProvider = ({ children }) => {
-  const [count, setCount] = useState(2);
+  const [count, setCount] = useState(1);
+  const [markCount, setMarkCount] = useState(1);
   const [data, setData] = useState(BookMarkDB);
 
   const addBook = () => {
@@ -28,6 +34,9 @@ export const DataProvider = ({ children }) => {
       ...data,
       books: [...data.books, { id: 0, title: '', marks: [] }],
     });
+    localStorage.setItem(NKEY, JSON.stringify(count));
+    console.log(localStorage);
+    //localStorage.key
   };
 
   const saveBook = (book) => {
@@ -40,6 +49,7 @@ export const DataProvider = ({ children }) => {
     setData({
       ...data,
     });
+    localStorage.setItem(SKEY, JSON.stringify(data));
     //books: [...data.books.filter((_book) => _book.id !== book.id), book]
   };
 
@@ -48,10 +58,23 @@ export const DataProvider = ({ children }) => {
       ...data,
       books: [...data.books.filter((_book) => _book.id !== book.id)],
     });
+    localStorage.setItem(SKEY, JSON.stringify(data));
+  };
+
+  const addMark = (book) => {
+    book.marks.push({ id: 0, title: '', description: '', src: '' });
+    setData({
+      ...data,
+    });
   };
 
   useEffect(() => {
     const mipData = localStorage.getItem(SKEY);
+    if (mipData) {
+      setData(JSON.parse(mipData) || BookMarkDB);
+      console.log(localStorage.getItem(NKEY));
+      setCount(Number(localStorage.getItem(NKEY)) + 1 || count);
+    }
   }, []);
 
   return (
@@ -61,6 +84,8 @@ export const DataProvider = ({ children }) => {
         addBook,
         saveBook,
         removeBook,
+        addMark,
+        SKEY,
       }}
     >
       {children}

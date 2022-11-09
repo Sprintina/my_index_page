@@ -6,7 +6,7 @@ import { useData } from '../hooks/data-context';
 export const Booklist = ({ book }) => {
   const [bookTitle, setBookTitle] = useState(book.title);
   const [isEditing, toggleEditing] = useReducer((pre) => !pre, false);
-  const { saveBook, removeBook } = useData();
+  const { saveBook, removeBook, addMark } = useData();
 
   const changeBookTitle = (book) => {
     book.title = bookTitle;
@@ -16,6 +16,7 @@ export const Booklist = ({ book }) => {
       toggleEditing();
     }
   };
+
   return (
     <div className='m-4 ml-6 w-80 flex-shrink-0 rounded-sm bg-cyan-100'>
       <div className='xl:h-[78vh]s h-[70vh] overflow-y-auto xs:h-[72vh] sm:h-[74vh] md:h-[76vh]'>
@@ -59,7 +60,10 @@ export const Booklist = ({ book }) => {
           <></>
         )}
       </div>
-      <button className='float-right m-1 rounded-full bg-lime-300 px-2 py-1 font-semibold text-emerald-800 hover:bg-lime-500'>
+      <button
+        onClick={() => addMark(book)}
+        className='float-right m-1 rounded-full bg-lime-300 px-2 py-1 font-semibold text-emerald-800 hover:bg-lime-500'
+      >
         + ADD Mark
       </button>
     </div>

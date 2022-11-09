@@ -10,27 +10,32 @@ export const AccountProvider = ({ children }) => {
   const [account, setAccount] = useState(AccountDB);
 
   const addAccount = (id, pw) => {
-    if (!account.userList.some((item) => item.id === id)) {
+    if (!account.userList?.some((item) => item.id === id)) {
       setAccount({ ...account.userList.push({ id, pw }) });
     }
   };
-  const checkAccount = (id, pw) => {
-    if (account.userList.some((item) => item.id === id)) {
-      if (account.userList.some((item) => item.id === id && item.pw === pw)) {
-        // 정상적으로 로그인됨
-        return true;
-      } else {
-        // 이미 존재하는 ID
-        // PW가 틀린경우
-        return false;
-      }
+  //회원가입을 위한 ID 확인
+  const checkAccount = (id) => {
+    if (account.userList?.some((item) => item.id === id)) {
+      // 이미 존재하는 ID
+      setAccount(account);
+      return false;
     } else {
-      //회원가입 상태
+      //새로운 ID
+      setAccount(account);
       return true;
     }
   };
-
-  const userPrint = (getid, getpw) => {
+  const loginAccount = (id, pw) => {
+    console.log(account);
+    if (account.userList?.some((item) => item.id === id && item.pw === pw)) {
+      setAccount(account);
+      // 정상적으로 로그인됨
+      return true;
+    }
+    return false;
+  };
+  /*  const userPrint = (getid, getpw) => {
     account.userList.forEach((element) => {
       console.log(element.id);
     });
@@ -40,15 +45,15 @@ export const AccountProvider = ({ children }) => {
       console.log('새로운 ID다!');
     }
     console.log(account.userList.length);
-  };
+  };*/
 
   return (
     <accountContext.Provider
       value={{
         account,
         addAccount,
-        userPrint,
         checkAccount,
+        loginAccount,
       }}
     >
       {children}

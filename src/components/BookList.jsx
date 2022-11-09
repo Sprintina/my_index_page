@@ -55,7 +55,9 @@ export const Booklist = ({ book }) => {
             </button>
           </div>
         ) : book.marks.length ? (
-          book.marks.map((mark) => <Mark key={mark.id} mark={mark} />)
+          book.marks.map((mark) => (
+            <Mark key={mark.id} mark={mark} id={book.id} />
+          ))
         ) : (
           <></>
         )}

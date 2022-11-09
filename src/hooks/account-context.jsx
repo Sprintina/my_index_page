@@ -1,5 +1,6 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
+const SKEY = 'mipdata';
 const accountContext = createContext();
 
 const AccountDB = {
@@ -14,6 +15,7 @@ export const AccountProvider = ({ children }) => {
       account.userList.push({ id, pw });
       setAccount(account);
     }
+    localStorage.setItem(SKEY, JSON.stringify(account));
   };
   //회원가입을 위한 ID 확인
   const checkAccount = (id) => {
@@ -32,17 +34,12 @@ export const AccountProvider = ({ children }) => {
     }
     return false;
   };
-  /*  const userPrint = (getid, getpw) => {
-    account.userList.forEach((element) => {
-      console.log(element.id);
-    });
-    if (account.userList.some((item) => item.id === getid)) {
-      console.log('현재 ID는 있는거!');
-    } else {
-      console.log('새로운 ID다!');
+  useEffect(() => {
+    const mipData = localStorage.getItem(SKEY);
+    if (mipData) {
+      setAccount(JSON.parse(mipData) || AccountDB);
     }
-    console.log(account.userList.length);
-  };*/
+  }, []);
 
   return (
     <accountContext.Provider

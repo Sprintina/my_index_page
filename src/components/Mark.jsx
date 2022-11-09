@@ -1,81 +1,128 @@
-import { TrashIcon, PencilIcon } from '@heroicons/react/24/outline';
-import { useReducer, useState } from 'react';
+import {
+  TrashIcon,
+  PencilIcon,
+  PencilSquareIcon,
+  ArrowUturnLeftIcon,
+} from '@heroicons/react/24/outline';
+import { useEffect, useReducer, useRef, useState } from 'react';
 import { useData } from '../hooks/data-context';
+import ky from 'ky';
 
 export const Mark = ({ mark, book }) => {
-  const [isEditing, toggleEditing] = useReducer((pre) => !pre, false);
-  const [markTitle, setMarkTitle] = useState(mark.title);
-  const [markSrc, setMarkSrc] = useState(mark.src);
-  const [description, setDescription] = useState(mark.description);
   const { saveMark, removeMark } = useData();
+  const [isEditing, toggleEditing] = useReducer((pre) => !pre, !mark.id);
+  const urlRef = useRef();
 
-  const changeMark = (mark) => {
-    mark.title = markTitle;
-    mark.src = markSrc;
-    mark.description = description;
-
-    saveMark(mark, book.id);
-
-    if (isEditing) {
-      toggleEditing();
-    }
+  const scrapOg = async (url) => {
+    return await ky(`https://sz.topician.com/sz/proxy?url=${url}`).json();
   };
 
+  const save = (evt) => {
+    evt.stopPropagation();
+
+    if (isEditing) {
+      const url = urlRef.current.value;
+      mark.image = null;
+      mark.title = 'Fetching...';
+      mark.description = '';
+      mark.url = url;
+      scrapOg(url)
+        .then((ogRet) => {
+          console.log('ogRet>>>', ogRet);
+          mark.title = ogRet.title || 'No Title';
+          mark.image = ogRet.image;
+          mark.description = ogRet.description;
+          saveMark(book, mark);
+        })
+        .catch((error) => {
+          mark.title = 'ERROR!! ' + error.message;
+          mark.description = 'Please remove this!';
+          saveMark(book, mark);
+        });
+    }
+    toggleEditing();
+  };
+
+  const remove = (evt) => {
+    evt.stopPropagation();
+    if (confirm('정말 삭제시겠어요?')) removeMark(book, mark.id);
+  };
+
+  const openSite = () => {
+    // console.log('openSite!!>>>', mark);
+    if (!isEditing) window.open(mark.url, '_blank');
+  };
+
+  useEffect(() => {
+    if (urlRef.current)
+      urlRef.current.value =
+        mark.url || 'https://sprintina.github.io/my_index_page/';
+  }, [isEditing]);
+
   return (
-    <div className='m-2 mb-3 box-border p-1'>
-      {mark.id === 0 || isEditing ? (
-        <div className='mx-2'>
+    <div
+      onClick={openSite}
+      aria-hidden='true'
+      className='group m-2 mb-3 box-border cursor-pointer rounded bg-slate-50 p-1 hover:bg-cyan-500'
+    >
+      {isEditing ? (
+        <>
           <input
             type='text'
-            value={markTitle}
-            onChange={(evt) => setMarkTitle(evt.target.value)}
-            className='m-1 h-7 w-full p-1'
-            placeholder='title...'
+            ref={urlRef}
+            onFocus={() => urlRef.current.select()}
+            className='mb-2 w-full rounded p-1.5'
+            placeholder='https://....'
           />
-          <input
-            type='text'
-            value={markSrc}
-            onChange={(evt) => setMarkSrc(evt.target.value)}
-            className='m-1 h-7 w-full p-1'
-            placeholder='img...'
-          />
-          <input
-            type='text'
-            value={description}
-            onChange={(evt) => setDescription(evt.target.value)}
-            className='m-1 h-7 w-full p-1'
-            placeholder='description...'
-          />
-          <button
-            onClick={() => changeMark(mark)}
-            className='float-right m-2 rounded bg-cyan-400 px-2 py-1 font-medium text-white hover:bg-cyan-500'
-          >
-            Save
-          </button>
-        </div>
+        </>
       ) : (
         <div>
-          <div>
-            <img src={mark.src} alt={mark.title} className='w-full' />
+          <div className='flex justify-center'>
+            {mark.image && (
+              <img
+                src={mark.image}
+                alt={mark.title}
+                className='max-h-[100px]'
+              />
+            )}
           </div>
-          <h3 className='font-medium text-slate-700'>{mark.title}</h3>
-          <p className='text gray-500 text-sm'>{mark.description}</p>
-          <div className='item-center mr-2 mb-2 flex justify-end'>
-            <button
-              onClick={() => toggleEditing()}
-              className='mr-1 rounded-full bg-yellow-300 px-2 hover:bg-yellow-500'
-            >
-              <PencilIcon className='h-10 w-5' />
-            </button>
-            <button
-              onClick={() => removeMark(mark, book)}
-              className='rounded-full bg-rose-300 px-2 hover:bg-rose-500'
-            >
-              <TrashIcon className='h-10 w-5' />
-            </button>
-          </div>
+          <h3 className='m-1 truncate font-medium text-slate-700'>
+            {mark.title}
+          </h3>
+          <p className='rounded0 m-1 truncate text-sm text-slate-500'>
+            {mark.description}
+          </p>
         </div>
       )}
+      <div
+        className={`item-center mr-3 ${
+          isEditing ? 'flex' : 'hidden'
+        } justify-end group-hover:flex`}
+      >
+        <button
+          onClick={save}
+          className='mb-1 mr-1 rounded-full bg-cyan-400 p-2 hover:bg-cyan-600'
+        >
+          <PencilSquareIcon className='h-4 text-white' />
+        </button>
+        <button
+          onClick={remove}
+          className='mb-1 rounded-full bg-rose-400 p-2 hover:bg-rose-500'
+        >
+          <TrashIcon className='h-4 text-white' />
+        </button>
+        {isEditing && (
+          <button
+            onClick={(evt) => {
+              evt.stopPropagation();
+              toggleEditing();
+            }}
+            className='mx-1 mb-1 rounded-full bg-slate-300 p-2 hover:bg-slate-500'
+          >
+            <ArrowUturnLeftIcon className='h-4 text-white' />
+          </button>
+        )}
+      </div>
     </div>
   );
 };

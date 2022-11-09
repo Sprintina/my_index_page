@@ -6,7 +6,7 @@ import { useData } from '../hooks/data-context';
 export const Booklist = ({ book }) => {
   const [bookTitle, setBookTitle] = useState(book.title);
   const [isEditing, toggleEditing] = useReducer((pre) => !pre, false);
-  const { saveBook, removeBook, addMark } = useData();
+  const { saveBook, removeBook, addMark, searchStr } = useData();
 
   const changeBookTitle = (book) => {
     book.title = bookTitle;
@@ -22,7 +22,7 @@ export const Booklist = ({ book }) => {
       <div className='xl:h-[78vh]s h-[70vh] overflow-y-auto xs:h-[72vh] sm:h-[74vh] md:h-[76vh]'>
         <div className='mb-4 flex h-14 items-center justify-between bg-cyan-300'>
           <h3 className='mb-2 truncate p-3 pt-4 text-2xl font-bold text-slate-700'>
-            {book.title}
+            {book?.title}
           </h3>
           <button onClick={() => toggleEditing()} className='mr-2 text-sm'>
             {isEditing ? (
@@ -48,16 +48,22 @@ export const Booklist = ({ book }) => {
               Save
             </button>
             <button
-              onClick={() => removeBook(book)}
+              onClick={() => removeBook(book.id)}
               className='float-right m-2 rounded bg-fuchsia-400 px-2 py-1 font-medium text-white hover:bg-fuchsia-600'
             >
               Remove
             </button>
           </div>
-        ) : book.marks.length ? (
-          book.marks.map((mark) => (
-            <Mark key={mark.id} mark={mark} book={book} />
-          ))
+        ) : book?.marks?.length ? (
+          // book?.marks.filter(mark => `${mark.url} ${mark.title}`).map((mark) => (
+          book?.marks
+            .filter((mark) =>
+              // mark.title.toLowerCase().includes(searchStr.toLowerCase())
+              RegExp(searchStr, 'i').exec(
+                `${mark.url} ${mark.title} ${mark.description}`
+              )
+            )
+            .map((mark) => <Mark key={mark.id} book={book} mark={mark} />)
         ) : (
           <></>
         )}

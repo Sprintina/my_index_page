@@ -1,13 +1,9 @@
 import { Login } from './Login';
 import { useUserState } from '../hooks/now-context';
 import { AccountProvider } from '../hooks/account-context';
-import { DataProvider } from '../hooks/data-context';
 import { BookManage } from './BookManage';
 import { Nav } from './Nav';
-
-const nowUser = {
-  loginUser: {},
-};
+import { useData } from '../hooks/data-context';
 
 export const ManagePage = () => {
   const { nowUsing } = useUserState();
@@ -19,11 +15,11 @@ export const ManagePage = () => {
             <Nav />
           </header>
           <main>
-            <DataProvider>
-              <BookManage />
-            </DataProvider>
+            <BookManage />
           </main>
-          <footer></footer>
+          <footer className='text-center text-slate-500'>
+            &#169; Indiflex - Senior Coding 2022
+          </footer>
         </div>
       ) : (
         <AccountProvider>

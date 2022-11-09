@@ -23,7 +23,7 @@ module.exports = {
   rules: {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-uses-react': 'off',
-    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/rules-of-hooks': 'warn',
     'react-hooks/exhaustive-deps': 'off',
     'react/prop-types': 'off',
     'prettier/prettier': 'error',

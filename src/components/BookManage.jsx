@@ -3,11 +3,14 @@ import { Booklist } from '../components/BookList';
 
 export const BookManage = ({ book }) => {
   const { data, addBook } = useData();
+
   return (
     <div className='flex items-start p-4'>
-      {data.books?.map((book) => (
-        <Booklist book={book} key={book.id} />
-      ))}
+      {data.books
+        .sort((a, b) => (a.id === 0 ? Number.MAX_SAFE_INTEGER : a.id - b.id))
+        .map((book) => (
+          <Booklist key={book.id} book={book} />
+        ))}
       <div>
         {data.books?.find((book) => !book.id) ? (
           ''

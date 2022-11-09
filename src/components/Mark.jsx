@@ -15,8 +15,8 @@ export const Mark = ({ book, mark }) => {
   const scrapOg = async (url) => {
     // const html = await ky(url).text();
     // const html = await ky(`https://sz.topician.com/sz/proxy?url=${url}`).text();
-    // const html = await ky(`https://cors-anywhere.herokuapp.com/${url}`).text();
-    // console.log('html>>', html);
+    // const html = await ky(`https://sz.topician.com/sz/proxy?url=${url}`).text();
+    // // console.log('html>>', html);
     // const ogs = html.match(/<meta property="og:(.*?)>/gi);
     // console.log(ogs);
     // const kv = ogs.map((og) =>
@@ -36,13 +36,19 @@ export const Mark = ({ book, mark }) => {
       mark.title = 'Fetching...';
       mark.description = '';
       mark.url = url;
-      scrapOg(url).then((ogRet) => {
-        console.log('ogRet>>>', ogRet);
-        mark.title = ogRet.title || 'No Title';
-        mark.image = ogRet.image;
-        mark.description = ogRet.description;
-        saveMark(book, mark);
-      });
+      scrapOg(url)
+        .then((ogRet) => {
+          console.log('ogRet>>>', ogRet);
+          mark.title = ogRet.title || 'No Title';
+          mark.image = ogRet.image;
+          mark.description = ogRet.description;
+          saveMark(book, mark);
+        })
+        .catch((error) => {
+          mark.title = 'ERROR!! ' + error.message;
+          mark.description = 'Please remove this!';
+          saveMark(book, mark);
+        });
     }
     toggleEditing();
   };
@@ -59,7 +65,7 @@ export const Mark = ({ book, mark }) => {
 
   useEffect(() => {
     if (urlRef.current)
-      urlRef.current.value = mark.url || 'https://tailwindcss.com';
+      urlRef.current.value = mark.url || 'https://indiflex.github.io/rpa_mip/';
   }, [isEditing]);
 
   return (
@@ -73,6 +79,7 @@ export const Mark = ({ book, mark }) => {
           <input
             type='text'
             ref={urlRef}
+            onFocus={() => urlRef.current.select()}
             className='mb-2 w-full rounded p-1.5'
             placeholder='https://....'
           />

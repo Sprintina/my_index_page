@@ -5,10 +5,20 @@ import {
   CalendarDaysIcon,
 } from '@heroicons/react/24/outline';
 import { useData } from '../hooks/data-context';
-import { Cal } from '../components/Cal';
+import { useState } from 'react';
+import { Modal } from './Modal';
 
 export const Nav = () => {
   const { searchStr, setSearchStr } = useData();
+
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   return (
     <nav className='flex items-center justify-between px-2 shadow'>
@@ -17,9 +27,13 @@ export const Nav = () => {
           <BookmarkSquareIcon className='w-8 text-cyan-500' /> My Index
         </h1>
       </div>
-      <button onClick={Cal} className='mb-1 rounded-full'>
-        <CalendarDaysIcon className='h-6 w-6 text-cyan-500' />
-      </button>
+      <div>
+        <button onClick={openModal} className='mb-1 rounded-full'>
+          <CalendarDaysIcon className='h-6 w-6 text-cyan-500' />
+        </button>
+
+        <Modal open={modalOpen} close={closeModal} header='Calendar' />
+      </div>
       <div className='flex'>
         {/* <MagnifyingGlassCircleIcon className='w-4 absolute h-8' /> */}
         <MagnifyingGlassIcon className='mr-1 h-6 w-6 text-cyan-500' />
@@ -34,3 +48,4 @@ export const Nav = () => {
     </nav>
   );
 };
+export default Nav;

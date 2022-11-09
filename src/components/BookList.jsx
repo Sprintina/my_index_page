@@ -17,6 +17,8 @@ export const Booklist = ({ book }) => {
     }
   };
 
+  console.log('@@Book');
+
   return (
     <div className='m-4 ml-6 w-80 flex-shrink-0 rounded-sm bg-cyan-100'>
       <div className='xl:h-[78vh]s h-[70vh] overflow-y-auto xs:h-[72vh] sm:h-[74vh] md:h-[76vh]'>

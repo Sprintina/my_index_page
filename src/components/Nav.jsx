@@ -21,22 +21,25 @@ export const Nav = () => {
   };
 
   return (
-    <nav className='flex items-center justify-between px-2 shadow'>
+    <nav className='flex h-10 items-center justify-between px-2 shadow'>
       <div>
         <h1 className='flex text-2xl font-bold'>
-          <BookmarkSquareIcon className='w-8 text-cyan-500' /> My Index
+          <BookmarkSquareIcon className='w-8 text-rose-400' /> My Index
         </h1>
       </div>
       <div>
-        <button onClick={openModal} className='mb-1 rounded-full'>
-          <CalendarDaysIcon className='h-6 w-6 text-cyan-500' />
+        <button
+          onClick={openModal}
+          className='grid place-items-center text-rose-400 hover:text-sky-400'
+        >
+          <CalendarDaysIcon className='w-9' />
         </button>
 
         <Modal open={modalOpen} close={closeModal} header='Calendar' />
       </div>
       <div className='flex'>
         {/* <MagnifyingGlassCircleIcon className='w-4 absolute h-8' /> */}
-        <MagnifyingGlassIcon className='mr-1 h-6 w-6 text-cyan-500' />
+        <MagnifyingGlassIcon className='mr-1 w-8 text-rose-400' />
         <input
           type='text'
           value={searchStr}

@@ -72,7 +72,7 @@ export const Mark = ({ book, mark }) => {
     <div
       onClick={openSite}
       aria-hidden='true'
-      className='group mb-1 box-border cursor-pointer rounded border-2 border-cyan-400 bg-slate-50 p-1 hover:bg-slate-200'
+      className='group mb-1 box-border cursor-pointer rounded border-2 border-rose-300 bg-slate-50 p-1 hover:bg-rose-200'
     >
       {isEditing ? (
         <>

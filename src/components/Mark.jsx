@@ -2,7 +2,7 @@ import { TrashIcon, PencilIcon } from '@heroicons/react/24/outline';
 import { useReducer, useState } from 'react';
 import { useData } from '../hooks/data-context';
 
-export const Mark = ({ mark, id }) => {
+export const Mark = ({ mark, book }) => {
   const [isEditing, toggleEditing] = useReducer((pre) => !pre, false);
   const [markTitle, setMarkTitle] = useState(mark.title);
   const [markSrc, setMarkSrc] = useState(mark.src);
@@ -14,7 +14,7 @@ export const Mark = ({ mark, id }) => {
     mark.src = markSrc;
     mark.description = description;
 
-    saveMark(mark, id);
+    saveMark(mark, book.id);
 
     if (isEditing) {
       toggleEditing();
@@ -68,7 +68,7 @@ export const Mark = ({ mark, id }) => {
               <PencilIcon className='h-10 w-5' />
             </button>
             <button
-              onClick={() => removeMark(mark)}
+              onClick={() => removeMark(mark, book)}
               className='rounded-full bg-rose-300 px-2 hover:bg-rose-500'
             >
               <TrashIcon className='h-10 w-5' />

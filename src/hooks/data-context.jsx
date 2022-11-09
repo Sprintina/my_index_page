@@ -74,7 +74,7 @@ export const DataProvider = ({ children }) => {
     if (!mark.id) {
       mark.id = idCount[bookId];
       idCount[bookId] += 1;
-      setIdCount();
+      setIdCount(idCount);
     }
     // data 다시 세팅
     setData({
@@ -82,10 +82,10 @@ export const DataProvider = ({ children }) => {
     });
     localStorage.setItem(SKEY, JSON.stringify(data));
   };
-  const removeMark = (mark, id) => {
+  const removeMark = (mark, book) => {
     setData({
       ...data,
-      books: [...data.books.filter((_book) => _book.id !== id)],
+      books: [...book.marks.filter((_mark) => _mark.id !== mark.id)],
     });
     localStorage.setItem(SKEY, JSON.stringify(data));
   };

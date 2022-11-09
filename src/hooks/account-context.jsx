@@ -11,26 +11,23 @@ export const AccountProvider = ({ children }) => {
 
   const addAccount = (id, pw) => {
     if (!account.userList?.some((item) => item.id === id)) {
-      setAccount({ ...account.userList.push({ id, pw }) });
+      account.userList.push({ id, pw });
+      setAccount(account);
     }
   };
   //회원가입을 위한 ID 확인
   const checkAccount = (id) => {
+    // 이미 존재하는 ID
     if (account.userList?.some((item) => item.id === id)) {
-      // 이미 존재하는 ID
-      setAccount(account);
       return false;
-    } else {
-      //새로운 ID
-      setAccount(account);
+    } //새로운 ID
+    else {
       return true;
     }
   };
   const loginAccount = (id, pw) => {
-    console.log(account);
+    // 정상적으로 로그인됨
     if (account.userList?.some((item) => item.id === id && item.pw === pw)) {
-      setAccount(account);
-      // 정상적으로 로그인됨
       return true;
     }
     return false;

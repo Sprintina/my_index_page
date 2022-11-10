@@ -15,7 +15,7 @@ module.exports = {
         'bubble-gum': '#ff77e9',
         bermuda: '#78dcca',
         skyBlue: '#00BFFF',
-        acpuire: '4AE3ED',
+        blueSea: '#00A0FF',
       },
     },
     screens: {

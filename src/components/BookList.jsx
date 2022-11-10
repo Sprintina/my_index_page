@@ -20,7 +20,7 @@ export const Booklist = ({ book }) => {
   console.log('@@Book');
 
   return (
-    <div className='m-4 ml-6 w-80 flex-shrink-0 rounded-sm bg-cyan-100'>
+    <div className='m-4 ml-6 mb-0 w-80 flex-shrink-0 rounded-sm bg-cyan-100'>
       <div className='xl:h-[78vh]s h-[70vh] overflow-y-auto xs:h-[72vh] sm:h-[74vh] md:h-[76vh]'>
         <div className='mb-4 flex h-14 items-center justify-between bg-cyan-300'>
           <h3 className='mb-2 truncate p-3 pt-4 text-2xl font-bold text-slate-700'>

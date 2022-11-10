@@ -3,10 +3,10 @@ import { useUserState } from '../hooks/now-context';
 import { AccountProvider } from '../hooks/account-context';
 import { BookManage } from './BookManage';
 import { Nav } from './Nav';
-import { useData } from '../hooks/data-context';
+import { ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline';
 
 export const ManagePage = () => {
-  const { nowUsing } = useUserState();
+  const { nowUsing, logout } = useUserState();
   return (
     <>
       {nowUsing ? (
@@ -16,6 +16,9 @@ export const ManagePage = () => {
           </header>
           <main>
             <BookManage />
+            <button onClick={() => logout()} className='text-blueSea -mt-3'>
+              <ArrowLeftOnRectangleIcon className='h-10, w-10' />
+            </button>
           </main>
           <footer className='text-center text-slate-500'>
             &#169; Indiflex - Senior Coding 2022

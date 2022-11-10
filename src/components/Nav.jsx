@@ -41,7 +41,7 @@ export const Nav = () => {
           value={searchStr}
           onChange={(evt) => setSearchStr(evt.target.value)}
           placeholder='search...'
-          className='my-6 mr-4 w-28'
+          className='my-6 mr-4 w-28 text-black'
         />
         <MagnifyingGlassCircleIcon className='float-right w-10' />
       </div>
